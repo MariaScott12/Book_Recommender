@@ -1,0 +1,68 @@
+<!doctype html>
+<body style = "background-color:lightblue;">
+<title>FindYourNovel</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"> -->
+<div class=page>
+  <h1><font color= "blue"> Fantasy Novel Recommender </font></h1>
+  <h2><font color= "black"> Based on Wikipedia's summaries of Fantasy Novel Series</font></h2>
+<form action = >
+
+ <p><font size="4" color= "black">Write a few sentences about the type of fantasy novel you'd enjoy reading </font> </p>
+  
+    <textarea style = "background-color:white" id = "txtName" rows = "5" cols = "55">
+  </textarea>
+
+ <input type = "button"
+    value = "submit"
+    onclick = "getwords()" /><br>
+
+<p id="listing"><font size="4">Here are the top 10 novels you'd also enjoy reading </font></p>
+ 
+
+</form>   
+
+   <script type = "text/javascript">
+
+
+     function getwords(){
+      console.log("here");
+       $.ajax({
+         type: "POST",
+         contentType: "application/json; charset=utf-8",
+         url: "/gof",
+         dataType: "json",
+         async: true,
+         data: "{\"grid\": [\""+document.getElementById("txtName").value+"\"]}",
+         //data: "{\"grid\": ["+1+"]}",
+           success: function (d) {
+          console.log(d);
+          
+          p = document.getElementById('listing')
+          for (i=1;i<d.words.length+1;i++) {
+           p.innerHTML = p.innerHTML + '<br>' + '<br>' + i + ". " + d.words[i-1];
+
+          //  for (j=0;j<1;j++) {
+          //  p.innerHTML = p.innerHTML + d.words[i][j] + '<br>';
+          // var txtOutput = document.getElementById("txtOutput");
+          // txtOutput.value = d.words;
+                              // }
+                                        }
+                                  }
+              })
+     }
+
+
+  
+
+</script>
+
+<p><font size="4" color= "black">Type in the exact title choice!</font> </p>
+
+<form method="get" action="https://en.wikipedia.org/w/index.php">
+  <input type="text" name="search">
+  <input type="submit">
+</form>
+
+  </body>
+</html>
